@@ -8,7 +8,7 @@ function App() {
 
   return (
     <div className="App">
-      <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} />{" "}
+      <SearchBar searchValue={searchValue} setSearchValue={setSearchValue} ></SearchBar>
       <WeatherApp searchValue={searchValue} />
     </div>
   );

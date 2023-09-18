@@ -1,6 +1,7 @@
 import React from "react";
 
 const SearchBar = ({ searchValue, setSearchValue }) => {
+
   const handleSearch = () => {
     setSearchValue(searchValue.trim());
   };
@@ -29,5 +30,6 @@ const SearchBar = ({ searchValue, setSearchValue }) => {
     </div>
   );
 };
+
 
 export default SearchBar;

@@ -3,20 +3,16 @@ import React, { useState, useEffect, useRef } from "react";
 const WeatherApp = ({ searchValue }) => {
   const [weatherData, setWeatherData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const apiKey = "03ae8b17b6c4b51c61fc70d6434a0fa0"; // Replace with your OpenWeatherMap API key
-
-  // Create a ref to store the timeout ID
+  const apiKey = process.env.REACT_APP_API_KEY;
   const typingTimeoutRef = useRef(null);
 
   useEffect(() => {
     if (!searchValue) return;
 
-    // Clear the previous timeout if it exists
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
 
-    // Set a new timeout to fetch data after a delay (e.g., 1500 milliseconds)
     typingTimeoutRef.current = setTimeout(() => {
       const fetchWeather = async (city) => {
         setLoading(true);
@@ -26,7 +22,6 @@ const WeatherApp = ({ searchValue }) => {
             `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`
           );
           const data = await response.json();
-          console.log(data);
           setWeatherData(data);
           setLoading(false);
         } catch (error) {
@@ -36,9 +31,8 @@ const WeatherApp = ({ searchValue }) => {
       };
 
       fetchWeather(searchValue);
-    }, 1500); // Adjust the delay time as needed (e.g., 1500 milliseconds for 1.5 seconds)
+    }, 1500);
 
-    // Cleanup the timeout when the component unmounts or when searchValue changes
     return () => {
       if (typingTimeoutRef.current) {
         clearTimeout(typingTimeoutRef.current);
@@ -46,16 +40,40 @@ const WeatherApp = ({ searchValue }) => {
     };
   }, [searchValue]);
 
-  useEffect(() => {
-    console.log(searchValue);
-    if (weatherData) {
-      console.log(weatherData); // This will log the temperature when weatherData is available
-    }
-  }, [searchValue, weatherData]);
-
   return (
     <>
-      <div>Loading...</div>
+      {loading ? (
+        <div>Loading...</div>
+      ) : weatherData ? (
+        <div className="weather">
+          <h1 className="city">Weather in {weatherData.name}</h1>
+          <img
+            src={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}.png`}
+            alt="Weather Icon"
+            className="icon"
+          />
+          <div className="description">
+            {weatherData.weather[0].description}
+          </div>
+          <h1 className="temp">{Math.floor(weatherData.main.temp)} °C</h1>
+          <div className="humidity">Humidity: {weatherData.main.humidity}%</div>
+          <div className="wind">
+            Wind speed: {Math.floor(weatherData.wind.speed)} km/h
+          </div>
+          <div className="sunrise">
+            Sunrise:{" "}
+            {new Date(weatherData.sys.sunrise * 1000).toLocaleTimeString(
+              "en-US"
+            )}
+          </div>
+          <div className="sunset">
+            Sunset:{" "}
+            {new Date(weatherData.sys.sunset * 1000).toLocaleTimeString(
+              "en-US"
+            )}
+          </div>
+        </div>
+      ) : null}{" "}
     </>
   );
 };

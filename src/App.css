@@ -14,10 +14,21 @@ body {
   background: #000000d0;
   color: #fff;
   padding: 2em;
-  border-radius: 30px;
+  border-top-left-radius: 30px;
+  border-top-right-radius: 30px;
   width: 100%;
   max-width: 420px;
   margin-top: 5em;
+}
+
+.weather {
+  background: #000000d0;
+  color: #fff;
+  padding: 2em;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+  width: 100%;
+  max-width: 420px;
   margin-bottom: 2em;
 }
 
