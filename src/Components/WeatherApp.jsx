@@ -40,6 +40,13 @@ const WeatherApp = ({ searchValue }) => {
     };
   }, [searchValue]);
 
+  useEffect(() => {
+    if (weatherData) {
+      // Updating background image
+      document.body.style.backgroundImage = `url('https://source.unsplash.com/1600x1080/?${weatherData.name}')`;
+    }
+  }, [weatherData]);
+
   return (
     <>
       {loading ? (
